@@ -16,7 +16,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider // Changed from Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,12 +28,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.theme.MyApplicationTheme
+
+val ModernBackground = Color(0xFFF0F2F5)
+val ModernCardSurfaceStart = Color(0xFFFFFFFF)
+val ModernCardSurfaceEnd = Color(0xFFF8F9FA)
+val ModernPrimaryText = Color(0xFF2C3E50)
+val ModernSecondaryText = Color(0xFF7F8C8D)
+val ModernAccent = Color(0xFF3498DB)
+val ModernIconTint = Color(0xFF566573)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,132 +51,128 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = MaterialTheme.colorScheme.background
-                ) { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        ProfileCard(
-                            name = "Theophilus.A.E",
-                            title = "FullStack Developer",
-                            address = "Jl. Araya Mansion No.8 - 22, Genitri, Tirtomoyo, Pakis, Malang, Jawa Timur 65154",
-                            email = "theophilus.a.e@example.com",
-                            phone = "+62 812 3456 7890",
-                            bio = "Passionate FullStack Developer dedicated to building innovative and user-friendly applications. Always learning and exploring new technologies."
-                        )
-                    }
-                }
+                // Call AppNavigation here
+                AppNavigation()
             }
         }
     }
 }
 
 @Composable
-fun ProfileCard(
+fun ProfileCardModern(
     name: String,
     title: String,
     address: String,
     email: String,
     phone: String,
     bio: String,
+    profileImageRes: Int,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(0.9f)
-            .padding(vertical = 16.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 8.dp,
-            pressedElevation = 4.dp
+            .fillMaxWidth(0.92f)
+            .padding(vertical = 20.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp,
+            pressedElevation = 5.dp,
+            hoveredElevation = 12.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = Color.Transparent
+        ),
     ) {
         Column(
             modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(ModernCardSurfaceStart, ModernCardSurfaceEnd)
+                    )
+                )
+                .padding(30.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.pfp),
+                painter = painterResource(id = profileImageRes),
                 contentDescription = "Profile Picture",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(140.dp)
                     .clip(CircleShape)
                     .border(
-                        width = 3.dp,
+                        width = 4.dp,
                         brush = Brush.linearGradient(
-                            colors = listOf(Color(0xFF8E2DE2), Color(0xFF4A00E0))
+                            colors = listOf(ModernAccent, Color(0xFF2980B9))
                         ),
                         shape = CircleShape
                     )
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = name,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 26.sp,
+                    color = ModernPrimaryText
+                )
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp,
+                    color = ModernAccent
+                )
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = bio,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    textAlign = TextAlign.Center,
+                    color = ModernSecondaryText,
+                    lineHeight = 22.sp
+                ),
+                modifier = Modifier.padding(horizontal = 10.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
-            HorizontalDivider( // Changed from Divider
-                modifier = Modifier.padding(horizontal = 32.dp),
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 40.dp),
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                color = ModernBackground.copy(alpha = 0.8f)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(18.dp)
             ) {
-                ContactInfoRow(
+                ContactInfoRowModern(
                     icon = Icons.Filled.LocationOn,
                     text = address,
-                    contentDescription = "Address Icon"
+                    contentDescription = "Address"
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                ContactInfoRow(
+                ContactInfoRowModern(
                     icon = Icons.Filled.Email,
                     text = email,
-                    contentDescription = "Email Icon"
+                    contentDescription = "Email"
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                ContactInfoRow(
+                ContactInfoRowModern(
                     icon = Icons.Filled.Phone,
                     text = phone,
-                    contentDescription = "Phone Icon"
+                    contentDescription = "Phone"
                 )
             }
         }
@@ -174,7 +180,7 @@ fun ProfileCard(
 }
 
 @Composable
-fun ContactInfoRow(
+fun ContactInfoRowModern(
     icon: ImageVector,
     text: String,
     contentDescription: String
@@ -185,36 +191,38 @@ fun ContactInfoRow(
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(20.dp)
+            tint = ModernIconTint,
+            modifier = Modifier.size(22.dp)
         )
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(18.dp))
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = ModernPrimaryText,
+                fontSize = 15.sp
+            )
         )
     }
 }
 
-@Preview(showBackground = true, widthDp = 380, heightDp = 700)
+@Preview(showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
-fun ProfileCardPreview() {
+fun ProfileCardModernPreview() {
     MyApplicationTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.background),
+                .background(ModernBackground),
             contentAlignment = Alignment.Center
         ) {
-            ProfileCard(
+            ProfileCardModern(
                 name = "Theophilus A.E.",
-                title = "Senior FullStack Architect",
-                address = "Cyberdyne Systems, 123 Innovation Drive, Tech City, CA 90210",
-                email = "theophilus.ae@example.com",
-                phone = "+62 800 1234 5678",
-                bio = "Crafting next-gen digital experiences with a passion for clean code and impactful solutions. Believer in continuous learning and caffeine."
+                title = "Visionary FullStack Architect",
+                address = "Stark Tower, New York, NY",
+                email = "theophilus.ae@avengers.com",
+                phone = "+1 (555) TONY-STARK",
+                bio = "Building the future, one line of code at a time. Dedicated to innovative solutions and pushing technological boundaries. Occasional philanthropist.",
+                profileImageRes = R.drawable.pfp
             )
         }
     }
